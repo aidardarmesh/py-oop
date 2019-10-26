@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethods
+from abc import ABC, abstractmethod
 import math
 
 class Base(ABC):
