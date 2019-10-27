@@ -69,7 +69,7 @@ class Knot(Polyline):
         for i in range(self.count):
             res.append(self.get_point(points, i*alpha))
         return res
-    
+
     def set_points(self):
         """функция перерасчета координат опорных точек"""
         for p in range(len(self.points)):
@@ -134,7 +134,8 @@ if __name__ == "__main__":
                 if event.key == pygame.K_KP_PLUS:
                     knot.set_count(knot.get_count()+1)
                 if event.key == pygame.K_KP_MINUS:
-                    knot.set_count(knot.get_count()-1 if steps > 1 else 0)
+                    steps = knot.get_count()
+                    knot.set_count(steps-1 if steps > 1 else 0)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 knot.add_point(event.pos)
