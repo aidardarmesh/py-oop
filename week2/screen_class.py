@@ -61,7 +61,7 @@ class Knot(Polyline):
             deg = len(points)-1
         if deg == 0:
             return points[0]
-        return points[deg]*alpha + get_point(alpha, deg-1)*(1-alpha)
+        return points[deg]*alpha + self.get_point(points, alpha, deg-1)*(1-alpha)
     
     def get_points(self, points):
         alpha = 1/self.count
