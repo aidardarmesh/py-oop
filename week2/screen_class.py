@@ -12,20 +12,21 @@ class Vec2d:
         self.x = x
         self.y = y
 
-    def __add__(self):
-        pass
+    def __add__(self, other):
+        return type(self)(self.x + other.x, self.y + other.y)
     
     def __sub__(self):
-        pass
+        return type(self)(self.x - other.x, self.y - other.y)
     
-    def __mul__(self):
-        pass
+    def __mul__(self, k):
+        self.x *= k
+        self.y *= k
 
     def int_pair(self):
-        pass
+        return (self.x, self.y)
     
-    def len(self):
-        pass
+    def __len__(self):
+        return math.sqrt(self.x**2 + self.y**2)
 
 
 class Polyline:
@@ -45,4 +46,3 @@ if __name__ == "__main__":
     pygame.init()
     gameDisplay = pygame.display.set_mode(SCREEN_DIM)
     pygame.display.set_caption("MyScreenSaver")
-
