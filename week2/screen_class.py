@@ -38,13 +38,47 @@ class Polyline:
         self.speeds = []
     
     def add_point(self, point):
-        pass
+        self.points.append(Vec2d(point))
+        self.speeds.append(Vec2d(
+            random.random() * 2,
+            random.random() * 2
+        ))
+    
+    def get_point(self, alpha, deg=None):
+        if deg is None:
+            deg = len(self.points) - 1
+        if deg == 0:
+            return points[0]
+        return points[deg]*alpha + self.get_point(alpha, deg-1)*(1-alpha)
+    
+    def get_points(self, count):
+        alpha = 1/count
+        res = []
+        for i in range(count):
+            res.append(self.get_point(self.points, i*alpha))
+        return res
     
     def set_points(self):
-        pass
+        """функция перерасчета координат опорных точек"""
+        for p in range(len(points)):
+            points[p] = points[p] + speeds[p]
+            if points[p][0] > SCREEN_DIM[0] or points[p][0] < 0:
+                speeds[p] = Vec2d(-speeds[p][0], speeds[p][1])
+            if points[p][1] > SCREEN_DIM[1] or points[p][1] < 0:
+                speeds[p] = Vec2d(speeds[p][0], -speeds[p][1])
     
-    def draw_points(self):
-        pass
+    def draw_points(self, style="points", width=3, color=(255, 255, 255)):
+        """функция отрисовки точек на экране"""
+        if style == "line":
+            for p_n in range(-1, len(self.points)-1):
+                pygame.draw.line(gameDisplay, color,
+                                (int(self.points[p_n].x), int(points[p_n].y)),
+                                (int(self.points[p_n+1].x), int(points[p_n+1].y)), width)
+
+        elif style == "points":
+            for p in self.points:
+                pygame.draw.circle(gameDisplay, color,
+                                (int(p.x), int(p.y)), width)
 
 
 class Knot(Polyline):
