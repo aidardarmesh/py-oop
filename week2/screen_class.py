@@ -33,29 +33,36 @@ class Vec2d:
 
 
 class Polyline:
-    def __init__(self):
+    def __init__(self, count):
         self.points = []
         self.speeds = []
+        self.count = count
+    
+    def get_count(self):
+        return self.count
+    
+    def set_count(self, count):
+        self.count = count
     
     def add_point(self, point):
-        self.points.append(Vec2d(point))
+        self.points.append(Vec2d(point[0], point[1]))
         self.speeds.append(Vec2d(
             random.random() * 2,
             random.random() * 2
         ))
     
-    def get_point(self, alpha, deg=None):
+    def get_point(self, points, alpha, deg=None):
         if deg is None:
-            deg = len(self.points) - 1
+            deg = len(points)-1
         if deg == 0:
-            return self.points[0]
-        return self.points[deg]*alpha + self.get_point(alpha, deg-1)*(1-alpha)
+            return points[0]
+        return points[deg]*alpha + get_point(alpha, deg-1)*(1-alpha)
     
-    def get_points(self, count):
-        alpha = 1/count
+    def get_points(self, points):
+        alpha = 1/self.count
         res = []
-        for i in range(count):
-            res.append(self.get_point(self.points, i*alpha))
+        for i in range(self.count):
+            res.append(self.get_point(points, i*alpha))
         return res
     
     def set_points(self):
@@ -66,14 +73,16 @@ class Polyline:
                 self.speeds[p] = Vec2d(-self.speeds[p].x, self.speeds[p].y)
             if points[p].y > SCREEN_DIM[1] or self.points[p].y < 0:
                 self.speeds[p] = Vec2d(self.speeds[p].x, -self.speeds[p].y)
-    
+
     def draw_points(self, style="points", width=3, color=(255, 255, 255)):
         """функция отрисовки точек на экране"""
         if style == "line":
-            for p_n in range(-1, len(self.points)-1):
+            points = self.get_knot()
+
+            for p_n in range(-1, len(points)-1):
                 pygame.draw.line(gameDisplay, color,
-                                (int(self.points[p_n].x), int(self.points[p_n].y)),
-                                (int(self.points[p_n+1].x), int(self.points[p_n+1].y)), width)
+                                (int(points[p_n].x), int(points[p_n].y)),
+                                (int(points[p_n+1].x), int(points[p_n+1].y)), width)
 
         elif style == "points":
             for p in self.points:
@@ -83,7 +92,16 @@ class Polyline:
 
 class Knot(Polyline):
     def get_knot(self):
-        pass
+        if len(self.points) < 3:
+            return []
+        res = []
+        for i in range(-2, len(self.points)-2):
+            ptn = []
+            ptn.append((self.points[i]+self.points[i+1])*0.5)
+            ptn.append(self.points[i+1])
+            ptn.append((self.points[i+1]+self.points[i+2])*0.5)
+            res.extend(self.get_points(ptn))
+        return res
 
 
 if __name__ == "__main__":
@@ -94,7 +112,7 @@ if __name__ == "__main__":
     steps = 35
     working = True
     pause = True
-    knot = Knot()
+    knot = Knot(steps)
 
     hue = 0
     color = pygame.Color(0)
@@ -107,13 +125,13 @@ if __name__ == "__main__":
                 if event.key == pygame.K_ESCAPE:
                     working = False
                 if event.key == pygame.K_r:
-                    knot = Knot()
+                    knot = Knot(steps)
                 if event.key == pygame.K_p:
                     pause = not pause
                 if event.key == pygame.K_KP_PLUS:
-                    steps += 1
+                    knot.set_count(knot.get_count()+1)
                 if event.key == pygame.K_KP_MINUS:
-                    steps -= 1 if steps > 1 else 0
+                    knot.set_count(knot.get_count()-1 if steps > 1 else 0)
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 knot.add_point(event.pos)
@@ -122,7 +140,7 @@ if __name__ == "__main__":
         hue = (hue + 1) % 360
         color.hsla = (hue, 100, 50, 100)
         knot.draw_points()
-        knot.draw_points(knot.get_knot(), "line", 3, color)
+        knot.draw_points("line", 3, color)
         if not pause:
             knot.set_points()
 
