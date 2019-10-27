@@ -21,6 +21,7 @@ class Vec2d:
     def __mul__(self, k):
         self.x *= k
         self.y *= k
+        return self
 
     def int_pair(self):
         return (self.x, self.y)
