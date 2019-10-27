@@ -31,6 +31,9 @@ class Vec2d:
     
     def __str__(self):
         return str(self.int_pair())
+    
+    def __repr__(self):
+        return str(self.int_pair())
 
 
 class Polyline:
