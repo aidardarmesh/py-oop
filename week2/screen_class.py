@@ -80,7 +80,7 @@ class Knot(Polyline):
             self.points[p] = self.points[p] + self.speeds[p]
             if self.points[p].x > SCREEN_DIM[0] or self.points[p].x < 0:
                 self.speeds[p] = Vec2d(-self.speeds[p].x, self.speeds[p].y)
-            if points[p].y > SCREEN_DIM[1] or self.points[p].y < 0:
+            if self.points[p].y > SCREEN_DIM[1] or self.points[p].y < 0:
                 self.speeds[p] = Vec2d(self.speeds[p].x, -self.speeds[p].y)
 
     def draw_points(self, style="points", width=3, color=(255, 255, 255)):
