@@ -100,9 +100,9 @@ class Knot(Polyline):
         res = []
         for i in range(-2, len(self.points)-2):
             ptn = []
-            ptn.append((self.points[i]+self.points[i+1])*0.5)
+            ptn.append((self.points[i] + self.points[i+1])*0.5)
             ptn.append(self.points[i+1])
-            ptn.append((self.points[i+1]+self.points[i+2])*0.5)
+            ptn.append((self.points[i+1] + self.points[i+2])*0.5)
             res.extend(self.get_points(ptn))
         return res
 
