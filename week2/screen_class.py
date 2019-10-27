@@ -15,7 +15,7 @@ class Vec2d:
     def __add__(self, other):
         return type(self)(self.x + other.x, self.y + other.y)
     
-    def __sub__(self):
+    def __sub__(self, other):
         return type(self)(self.x - other.x, self.y - other.y)
     
     def __mul__(self, k):
@@ -25,8 +25,11 @@ class Vec2d:
     def int_pair(self):
         return (self.x, self.y)
     
-    def __len__(self):
+    def len(self):
         return math.sqrt(self.x**2 + self.y**2)
+    
+    def __str__(self):
+        return str(self.int_pair())
 
 
 class Polyline:
