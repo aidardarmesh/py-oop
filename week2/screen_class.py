@@ -19,9 +19,7 @@ class Vec2d:
         return type(self)(self.x - other.x, self.y - other.y)
     
     def __mul__(self, k):
-        self.x *= k
-        self.y *= k
-        return self
+        return type(self)(self.x*k, self.y*k)
 
     def int_pair(self):
         return (self.x, self.y)
@@ -76,6 +74,7 @@ class Knot(Polyline):
 
     def set_points(self):
         """функция перерасчета координат опорных точек"""
+        print("set_points")
         for p in range(len(self.points)):
             self.points[p] = self.points[p] + self.speeds[p]
             if self.points[p].x > SCREEN_DIM[0] or self.points[p].x < 0:
@@ -109,7 +108,6 @@ class Knot(Polyline):
             ptn.append((self.points[i+1] + self.points[i+2])*0.5)
             res.extend(self.get_points(ptn))
         return res
-
 
 if __name__ == "__main__":
     pygame.init()
