@@ -33,16 +33,9 @@ class Vec2d:
 
 
 class Polyline:
-    def __init__(self, count):
+    def __init__(self):
         self.points = []
         self.speeds = []
-        self.count = count
-    
-    def get_count(self):
-        return self.count
-    
-    def set_count(self, count):
-        self.count = count
     
     def add_point(self, point):
         self.points.append(Vec2d(point[0], point[1]))
@@ -50,6 +43,18 @@ class Polyline:
             random.random() * 2,
             random.random() * 2
         ))
+
+
+class Knot(Polyline):
+    def __init__(self, count):
+        super().__init__()
+        self.count = count
+    
+    def get_count(self):
+        return self.count
+    
+    def set_count(self, count):
+        self.count = count
     
     def get_point(self, points, alpha, deg=None):
         if deg is None:
@@ -89,8 +94,6 @@ class Polyline:
                 pygame.draw.circle(gameDisplay, color,
                                 (int(p.x), int(p.y)), width)
 
-
-class Knot(Polyline):
     def get_knot(self):
         if len(self.points) < 3:
             return []
