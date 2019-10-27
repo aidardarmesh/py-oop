@@ -48,8 +48,8 @@ class Polyline:
         if deg is None:
             deg = len(self.points) - 1
         if deg == 0:
-            return points[0]
-        return points[deg]*alpha + self.get_point(alpha, deg-1)*(1-alpha)
+            return self.points[0]
+        return self.points[deg]*alpha + self.get_point(alpha, deg-1)*(1-alpha)
     
     def get_points(self, count):
         alpha = 1/count
@@ -60,20 +60,20 @@ class Polyline:
     
     def set_points(self):
         """функция перерасчета координат опорных точек"""
-        for p in range(len(points)):
-            points[p] = points[p] + speeds[p]
-            if points[p][0] > SCREEN_DIM[0] or points[p][0] < 0:
-                speeds[p] = Vec2d(-speeds[p][0], speeds[p][1])
-            if points[p][1] > SCREEN_DIM[1] or points[p][1] < 0:
-                speeds[p] = Vec2d(speeds[p][0], -speeds[p][1])
+        for p in range(len(self.points)):
+            self.points[p] = self.points[p] + self.speeds[p]
+            if self.points[p].x > SCREEN_DIM[0] or self.points[p].x < 0:
+                self.speeds[p] = Vec2d(-self.speeds[p].x, self.speeds[p].y)
+            if points[p].y > SCREEN_DIM[1] or self.points[p].y < 0:
+                self.speeds[p] = Vec2d(self.speeds[p].x, -self.speeds[p].y)
     
     def draw_points(self, style="points", width=3, color=(255, 255, 255)):
         """функция отрисовки точек на экране"""
         if style == "line":
             for p_n in range(-1, len(self.points)-1):
                 pygame.draw.line(gameDisplay, color,
-                                (int(self.points[p_n].x), int(points[p_n].y)),
-                                (int(self.points[p_n+1].x), int(points[p_n+1].y)), width)
+                                (int(self.points[p_n].x), int(self.points[p_n].y)),
+                                (int(self.points[p_n+1].x), int(self.points[p_n+1].y)), width)
 
         elif style == "points":
             for p in self.points:
