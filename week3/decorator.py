@@ -1,8 +1,12 @@
-from hero import *
+from abc import ABC, abstractmethod
 
-class AbstractEffect(Hero):
+class AbstractEffect(ABC, Hero):
     def __init__(self, base):
         self.base = base
+    
+    @abstractmethod
+    def get_stats(self):
+        pass
     
     def get_positive_effects(self):
         return self.base.get_positive_effects()
@@ -11,10 +15,14 @@ class AbstractEffect(Hero):
         return self.base.get_negative_effects()
 
 class AbstractPositive(AbstractEffect):
-    pass
+    @abstractmethod
+    def get_positive_effects(self):
+        pass
 
 class AbstractNegative(AbstractEffect):
-    pass
+    @abstractmethod
+    def get_negative_effects(self):
+        pass
 
 class Berserk(AbstractPositive):
     def get_stats(self):
