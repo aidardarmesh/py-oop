@@ -5,7 +5,7 @@
 # Скопируйте код вашего решения в секцию ВАШ КОД и запустите скрипт
 # =============================================================================
 from abc import ABC, abstractmethod
-
+from decorator import *
 
 class Hero:
     def __init__(self):
