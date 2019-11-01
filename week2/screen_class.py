@@ -56,7 +56,8 @@ class Knot(Polyline):
         return self.count
     
     def set_count(self, count):
-        self.count = count
+        if count > 0:
+            self.count = count
     
     def get_point(self, points, alpha, deg=None):
         if deg is None:
@@ -74,7 +75,6 @@ class Knot(Polyline):
 
     def set_points(self):
         """функция перерасчета координат опорных точек"""
-        print("set_points")
         for p in range(len(self.points)):
             self.points[p] = self.points[p] + self.speeds[p]
             if self.points[p].x > SCREEN_DIM[0] or self.points[p].x < 0:
