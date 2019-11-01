@@ -9,9 +9,9 @@ class ObservableEngine(Engine):
     def unsubscribe(self, observer):
         self.subscribers.remove(observer)
     
-    def notify(self, achievement, observer):
-        if observer in self.subscribers:
-            observer.update(achievement)
+    def notify(self, achievement):
+        for subscriber in self.subscribers:
+            subscriber.update(achievement)
 
 
 class AbstractObserver(ABC):
