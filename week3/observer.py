@@ -20,7 +20,7 @@ class AbstractObserver(ABC):
         pass
 
 
-class ShortNotificationPriner(AbstractObserver):
+class ShortNotificationPrinter(AbstractObserver):
     def __init__(self):
         self.achievements = set()
     
