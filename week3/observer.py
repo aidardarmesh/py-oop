@@ -11,7 +11,10 @@ class ObservableEngine(Engine):
     
     def notify(self, observer, achievement):
         if observer in self.subscribers:
-            observer.update(achievement)
+            if type(observer) == ShortNotificationPrinter:
+                observer.update(achievement.title)
+            else:
+                observer.update(achievement)
 
 
 class AbstractObserver(ABC):
@@ -25,7 +28,7 @@ class ShortNotificationPrinter(AbstractObserver):
         self.achievements = set()
     
     def update(self, achievement):
-        self.achievements.add(achievement.title)
+        self.achievements.add(achievement)
 
 
 class FullNotificationPrinter(AbstractObserver):
