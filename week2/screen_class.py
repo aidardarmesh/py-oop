@@ -24,7 +24,7 @@ class Vec2d:
     def int_pair(self):
         return (self.x, self.y)
     
-    def len(self):
+    def len(self):  # def __len__(self): вместо этого
         return math.sqrt(self.x**2 + self.y**2)
     
     def __str__(self):
@@ -109,6 +109,28 @@ class Knot(Polyline):
             res.extend(self.get_points(ptn))
         return res
 
+def draw_help(pygame, gameDisplay):
+    """функция отрисовки экрана справки программы"""
+    gameDisplay.fill((50, 50, 50))
+    font1 = pygame.font.SysFont("courier", 24)
+    font2 = pygame.font.SysFont("serif", 24)
+    data = []
+    data.append(["F1", "Show Help"])
+    data.append(["R", "Restart"])
+    data.append(["P", "Pause/Play"])
+    data.append(["Num+", "More points"])
+    data.append(["Num-", "Less points"])
+    data.append(["", ""])
+    data.append([str(steps), "Current points"])
+
+    pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
+        (0, 0), (800, 0), (800, 600), (0, 600)], 5)
+    for i, text in enumerate(data):
+        gameDisplay.blit(font1.render(
+            text[0], True, (128, 128, 255)), (100, 100 + 30 * i))
+        gameDisplay.blit(font2.render(
+            text[1], True, (128, 128, 255)), (200, 100 + 30 * i))
+
 if __name__ == "__main__":
     pygame.init()
     gameDisplay = pygame.display.set_mode(SCREEN_DIM)
@@ -116,6 +138,7 @@ if __name__ == "__main__":
 
     steps = 35
     working = True
+    show_help = False
     pause = True
     knot = Knot(steps)
 
@@ -135,6 +158,8 @@ if __name__ == "__main__":
                     pause = not pause
                 if event.key == pygame.K_KP_PLUS:
                     knot.set_count(knot.get_count()+1)
+                if event.key == pygame.K_F1:
+                    show_help = not show_help
                 if event.key == pygame.K_KP_MINUS:
                     steps = knot.get_count()
                     knot.set_count(steps-1 if steps > 1 else 0)
@@ -149,6 +174,8 @@ if __name__ == "__main__":
         knot.draw_points("line", 3, color)
         if not pause:
             knot.set_points()
+        if show_help:
+            draw_help(pygame, gameDisplay)
 
         pygame.display.flip()
 
