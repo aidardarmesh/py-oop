@@ -24,8 +24,8 @@ class Vec2d:
     def int_pair(self):
         return (self.x, self.y)
     
-    def len(self):  # def __len__(self): вместо этого
-        return math.sqrt(self.x**2 + self.y**2)
+    def __len__(self):
+        return int(math.sqrt(self.x**2 + self.y**2))
     
     def __str__(self):
         return str(self.int_pair())
