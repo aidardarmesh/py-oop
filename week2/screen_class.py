@@ -48,9 +48,10 @@ class Polyline:
 
 
 class Knot(Polyline):
-    def __init__(self, count):
+    def __init__(self, count, dim):
         super().__init__()
         self.count = count
+        self.dim = dim
     
     def get_count(self):
         return self.count
@@ -77,24 +78,24 @@ class Knot(Polyline):
         """функция перерасчета координат опорных точек"""
         for p in range(len(self.points)):
             self.points[p] = self.points[p] + self.speeds[p]
-            if self.points[p].x > SCREEN_DIM[0] or self.points[p].x < 0:
+            if self.points[p].x > self.dim[0] or self.points[p].x < 0:
                 self.speeds[p] = Vec2d(-self.speeds[p].x, self.speeds[p].y)
-            if self.points[p].y > SCREEN_DIM[1] or self.points[p].y < 0:
+            if self.points[p].y > self.dim[1] or self.points[p].y < 0:
                 self.speeds[p] = Vec2d(self.speeds[p].x, -self.speeds[p].y)
 
-    def draw_points(self, style="points", width=3, color=(255, 255, 255)):
+    def draw_points(self, game, display, style="points", width=3, color=(255, 255, 255)):
         """функция отрисовки точек на экране"""
         if style == "line":
             points = self.get_knot()
 
             for p_n in range(-1, len(points)-1):
-                pygame.draw.line(gameDisplay, color,
+                game.draw.line(display, color,
                                 (int(points[p_n].x), int(points[p_n].y)),
                                 (int(points[p_n+1].x), int(points[p_n+1].y)), width)
 
         elif style == "points":
             for p in self.points:
-                pygame.draw.circle(gameDisplay, color,
+                game.draw.circle(display, color,
                                 (int(p.x), int(p.y)), width)
 
     def get_knot(self):
@@ -109,11 +110,11 @@ class Knot(Polyline):
             res.extend(self.get_points(ptn))
         return res
 
-def draw_help(pygame, gameDisplay):
+def draw_help(game, display, steps):
     """функция отрисовки экрана справки программы"""
-    gameDisplay.fill((50, 50, 50))
-    font1 = pygame.font.SysFont("courier", 24)
-    font2 = pygame.font.SysFont("serif", 24)
+    display.fill((50, 50, 50))
+    font1 = game.font.SysFont("courier", 24)
+    font2 = game.font.SysFont("serif", 24)
     data = []
     data.append(["F1", "Show Help"])
     data.append(["R", "Restart"])
@@ -123,12 +124,12 @@ def draw_help(pygame, gameDisplay):
     data.append(["", ""])
     data.append([str(steps), "Current points"])
 
-    pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
+    game.draw.lines(display, (255, 50, 50, 255), True, [
         (0, 0), (800, 0), (800, 600), (0, 600)], 5)
     for i, text in enumerate(data):
-        gameDisplay.blit(font1.render(
+        display.blit(font1.render(
             text[0], True, (128, 128, 255)), (100, 100 + 30 * i))
-        gameDisplay.blit(font2.render(
+        display.blit(font2.render(
             text[1], True, (128, 128, 255)), (200, 100 + 30 * i))
 
 if __name__ == "__main__":
@@ -140,7 +141,7 @@ if __name__ == "__main__":
     working = True
     show_help = False
     pause = True
-    knot = Knot(steps)
+    knot = Knot(steps, SCREEN_DIM)
 
     hue = 0
     color = pygame.Color(0)
@@ -170,12 +171,12 @@ if __name__ == "__main__":
         gameDisplay.fill((0, 0, 0))
         hue = (hue + 1) % 360
         color.hsla = (hue, 100, 50, 100)
-        knot.draw_points()
-        knot.draw_points("line", 3, color)
+        knot.draw_points(pygame, gameDisplay)
+        knot.draw_points(pygame, gameDisplay, style="line", width=3, color=color)
         if not pause:
             knot.set_points()
         if show_help:
-            draw_help(pygame, gameDisplay)
+            draw_help(pygame, gameDisplay, knot.get_count())
 
         pygame.display.flip()
 
