@@ -34,7 +34,11 @@ class FloatHandler(NullHandler):
             return super().handle(char, event)
 
 class StrHandler(NullHandler):
-    pass
+    def handle(self, char, event):
+        if event.type is str:
+            return char.string_field
+        else:
+            return super().handle(char, event)
 
 obj = SomeObject()
 obj.integer_field = 42
@@ -43,8 +47,7 @@ obj.string_field = "some text"
 chain = IntHandler(FloatHandler(StrHandler(NullHandler)))
 print(chain.handle(obj, EventGet(int)))  # 42
 print(chain.handle(obj, EventGet(float)))  # 3.14
-# chain.handle(obj, EventGet(str))
-# 'some text'
+print(chain.handle(obj, EventGet(str)))  # 'some text'
 # chain.handle(obj, EventSet(100))
 # chain.handle(obj, EventGet(int))
 # 100
