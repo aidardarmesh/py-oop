@@ -5,7 +5,8 @@ class SomeObject:
         self.string_field = ""
 
 class EventGet:
-    pass
+    def __init__(self, type_):
+        self.type = type_
 
 class EventSet:
     pass
@@ -18,8 +19,12 @@ class NullHandler:
         if self.__successor:
             self.__successor.handle()
 
-class IntHandler:
-    pass
+class IntHandler(NullHandler):
+    def handle(self, char, event):
+        if event.type is int:
+            return char.integer_field
+        else:
+            super().handle(char, event)
 
 class FloatHandler:
     pass
