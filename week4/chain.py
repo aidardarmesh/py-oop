@@ -27,7 +27,11 @@ class IntHandler(NullHandler):
             super().handle(char, event)
 
 class FloatHandler(NullHandler):
-    pass
+    def handle(self, char, event):
+        if event.type is float:
+            return char.float_field
+        else:
+            super().handle(char, event)
 
 class StrHandler(NullHandler):
     pass
