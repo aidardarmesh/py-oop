@@ -11,7 +11,12 @@ class EventSet:
     pass
 
 class NullHandler:
-    pass
+    def __init__(self, successor=None):
+        self.__successor = successor
+    
+    def handle(self, char, event):
+        if self.__successor:
+            self.__successor.handle()
 
 class IntHandler:
     pass
