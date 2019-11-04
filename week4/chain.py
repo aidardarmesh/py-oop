@@ -34,7 +34,10 @@ class IntHandler(NullHandler):
 class FloatHandler(NullHandler):
     def handle(self, char, event):
         if event.type is float:
-            return char.float_field
+            if isinstance(event, EventGet):
+                return char.float_field
+            else:
+                char.float_field = event.value
         else:
             return super().handle(char, event)
 
@@ -54,12 +57,9 @@ print(chain.handle(obj, EventGet(int)))  # 42
 print(chain.handle(obj, EventGet(float)))  # 3.14
 print(chain.handle(obj, EventGet(str)))  # 'some text'
 chain.handle(obj, EventSet(100))
-print(obj.integer_field)
-# chain.handle(obj, EventGet(int))
-# 100g
-# chain.handle(obj, EventSet(0.5))
-# chain.handle(obj, EventGet(float))
-# 0.5
+print(chain.handle(obj, EventGet(int))) # 100
+chain.handle(obj, EventSet(0.5))
+print(chain.handle(obj, EventGet(float)))  # 0.5
 # chain.handle(obj, EventSet('new text'))
 # chain.handle(obj, EventGet(str))
 # 'new text'
