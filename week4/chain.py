@@ -9,7 +9,9 @@ class EventGet:
         self.type = type_
 
 class EventSet:
-    pass
+    def __init__(self, value):
+        self.value = value
+        self.type = type(value)
 
 class NullHandler:
     def __init__(self, successor=None):
@@ -22,7 +24,10 @@ class NullHandler:
 class IntHandler(NullHandler):
     def handle(self, char, event):
         if event.type is int:
-            return char.integer_field
+            if isinstance(event, EventGet):
+                return char.integer_field
+            else:
+                char.integer_field = event.value
         else:
             return super().handle(char, event)
 
@@ -48,9 +53,10 @@ chain = IntHandler(FloatHandler(StrHandler(NullHandler)))
 print(chain.handle(obj, EventGet(int)))  # 42
 print(chain.handle(obj, EventGet(float)))  # 3.14
 print(chain.handle(obj, EventGet(str)))  # 'some text'
-# chain.handle(obj, EventSet(100))
+chain.handle(obj, EventSet(100))
+print(obj.integer_field)
 # chain.handle(obj, EventGet(int))
-# 100
+# 100g
 # chain.handle(obj, EventSet(0.5))
 # chain.handle(obj, EventGet(float))
 # 0.5
