@@ -26,9 +26,8 @@ class IntHandler(NullHandler):
         else:
             super().handle(char, event)
 
-class FloatHandler:
+class FloatHandler(NullHandler):
     pass
 
-class StrHandler:
+class StrHandler(NullHandler):
     pass
-
