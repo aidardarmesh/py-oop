@@ -17,21 +17,21 @@ class NullHandler:
     
     def handle(self, char, event):
         if self.__successor:
-            self.__successor.handle()
+            return self.__successor.handle(char, event)
 
 class IntHandler(NullHandler):
     def handle(self, char, event):
         if event.type is int:
             return char.integer_field
         else:
-            super().handle(char, event)
+            return super().handle(char, event)
 
 class FloatHandler(NullHandler):
     def handle(self, char, event):
         if event.type is float:
             return char.float_field
         else:
-            super().handle(char, event)
+            return super().handle(char, event)
 
 class StrHandler(NullHandler):
     pass
@@ -42,8 +42,7 @@ obj.float_field = 3.14
 obj.string_field = "some text"
 chain = IntHandler(FloatHandler(StrHandler(NullHandler)))
 print(chain.handle(obj, EventGet(int)))  # 42
-# chain.handle(obj, EventGet(float))
-# 3.14
+print(chain.handle(obj, EventGet(float)))  # 3.14
 # chain.handle(obj, EventGet(str))
 # 'some text'
 # chain.handle(obj, EventSet(100))
