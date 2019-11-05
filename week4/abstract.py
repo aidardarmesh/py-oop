@@ -1,24 +1,24 @@
-from abc import ABC, abstractmethod
+import random
 
 
-class AbstractLevel(ABC):
-    @abstractmethod
-    def get_map(self):
-        pass
+class AbstractLevel:
+    @classmethod
+    def get_map(Class):
+        return Class.Map()
     
-    @abstractmethod
-    def get_objects(self):
-        pass
+    @classmethod
+    def get_objects(Class):
+        return Class.Objects()
 
 
 class EasyLevel(AbstractLevel):
     def get_map(self):
-        return EasyMap()
+        return Map()
     
     def get_objects(self):
-        return EasyObjects()
+        return Objects()
     
-    class EasyMap:
+    class Map:
         def __init__(self):
             self._map = [[0 for j in range(5)] for i in range(5)]
             for i in range(5):
@@ -33,7 +33,7 @@ class EasyLevel(AbstractLevel):
         def get_map(self):
             return self._map
     
-    class EasyObjects:
+    class Objects:
         def __init__(self):
             # размещаем переход на след. уровень
             self.objects = [('next_lvl', (2, 2))]
@@ -58,12 +58,12 @@ class EasyLevel(AbstractLevel):
 
 class MediumLevel(AbstractLevel):
     def get_map(self):
-        return MediumMap()
+        return Map()
     
     def get_objects(self):
-        return MediumObjects()
+        return Objects()
     
-    class MediumMap:
+    class Map:
         def __init__(self):
             self._map = [[0 for j in range(8)] for i in range(8)]
             for i in range(8):
@@ -78,7 +78,7 @@ class MediumLevel(AbstractLevel):
         def get_map(self):
             return self._map
     
-    class MediumObjects:
+    class Objects:
         def __init__(self):
             # размещаем переход на след. уровень
             self.objects = [('next_lvl', (4, 4))]
@@ -103,12 +103,12 @@ class MediumLevel(AbstractLevel):
 
 class HardLevel(AbstractLevel):
     def get_map(self):
-        return HardMap()
+        return Map()
     
     def get_objects(self):
-        return HardObjects()
+        return Objects()
     
-    class HardMap:
+    class Map:
         def __init__(self):
             self._map = [[0 for j in range(10)] for i in range(10)]
             for i in range(10):
@@ -123,7 +123,7 @@ class HardLevel(AbstractLevel):
         def get_map(self):
             return self._map
     
-    class HardObjects:
+    class Objects:
         def __init__(self):
             # размещаем переход на след. уровень
             self.objects = [('next_lvl', (5, 5))]
