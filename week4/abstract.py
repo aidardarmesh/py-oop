@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class AbstractLevel:
+class AbstractLevel(ABC):
     @abstractmethod
     def get_map(self):
         pass
