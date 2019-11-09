@@ -143,38 +143,6 @@ def handle_hard_level(loader, node):
 
     return {'map': HardLevel.Map(), 'obj': HardLevel.Objects(), 'config': value}
 
-yaml.add_constructor(u'!easy_level', handle_easy_level)
-yaml.add_constructor(u'!medium_level', handle_medium_level)
-yaml.add_constructor(u'!hard_level', handle_hard_level)
-# yaml строка
-# document = '''
-# levels:
-#     - !easy_level {}
-#     - !medium_level
-#         enemy: ['rat']
-#     - !hard_level
-#         enemy:
-#             - rat
-#             - snake
-#             - dragon
-#         enemy_count: 10
-# '''
-# выполняем загрузку
-# obj = yaml.load(document)
-# выведем полученный объект, ожидаем строку
-# ExampleClass, value - 5
-
-# Levels = {'levels':[]}
-# _map = EasyLevel.Map()
-# _obj = EasyLevel.Objects()
-# Levels['levels'].append({'map': _map, 'obj': _obj})
-
-# _map = MediumLevel.Map()
-# _obj = MediumLevel.Objects()
-# _obj.config = {'enemy':['rat']}
-# Levels['levels'].append({'map': _map, 'obj': _obj})
-
-# _map = HardLevel.Map()
-# _obj = HardLevel.Objects()
-# _obj.config = {'enemy': ['rat', 'snake', 'dragon'], 'enemy_count': 10}
-# Levels['levels'].append({'map': _map, 'obj': _obj})
+yaml.add_constructor('!easy_level', handle_easy_level)
+yaml.add_constructor('!medium_level', handle_medium_level)
+yaml.add_constructor('!hard_level', handle_hard_level)
