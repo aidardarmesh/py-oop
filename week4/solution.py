@@ -134,14 +134,16 @@ def handle_easy_level(loader, node):
     return {'map': EasyLevel.Map(), 'obj': EasyLevel.Objects()}
 
 def handle_medium_level(loader, node):
-    value = loader.construct_mapping(node)
+    obj = MediumLevel.Objects()
+    obj.config = loader.construct_mapping(node)
     
-    return {'map': MediumLevel.Map(), 'obj': MediumLevel.Objects(), 'config': value}
+    return {'map': MediumLevel.Map(), 'obj': obj}
 
 def handle_hard_level(loader, node):
-    value = loader.construct_mapping(node)
+    obj = HardLevel.Objects()
+    obj.config = loader.construct_mapping(node)
 
-    return {'map': HardLevel.Map(), 'obj': HardLevel.Objects(), 'config': value}
+    return {'map': HardLevel.Map(), 'obj': obj}
 
 yaml.add_constructor('!easy_level', handle_easy_level)
 yaml.add_constructor('!medium_level', handle_medium_level)
