@@ -135,30 +135,32 @@ def handle_easy_level(loader, node):
 
 def handle_medium_level(loader, node):
     value = loader.construct_mapping(node)
-    print(value)
+    
+    return {'map': MediumLevel.Map(), 'obj': MediumLevel.Objects(), 'config': value}
 
 def handle_hard_level(loader, node):
     value = loader.construct_mapping(node)
-    print(value)
 
-yaml.add_constructor('!easy_level', handle_easy_level)
-yaml.add_constructor('!medium_level', handle_medium_level)
-yaml.add_constructor('!hard_level', handle_hard_level)
+    return {'map': HardLevel.Map(), 'obj': HardLevel.Objects(), 'config': value}
+
+yaml.add_constructor(u'!easy_level', handle_easy_level)
+yaml.add_constructor(u'!medium_level', handle_medium_level)
+yaml.add_constructor(u'!hard_level', handle_hard_level)
 # yaml строка
-document = """
-levels:
-    - !easy_level {}
-    - !medium_level
-        enemy: ['rat']
-    - !hard_level
-        enemy:
-            - rat
-            - snake
-            - dragon
-        enemy_count: 10
-"""
+# document = '''
+# levels:
+#     - !easy_level {}
+#     - !medium_level
+#         enemy: ['rat']
+#     - !hard_level
+#         enemy:
+#             - rat
+#             - snake
+#             - dragon
+#         enemy_count: 10
+# '''
 # выполняем загрузку
-obj = yaml.load(document)
+# obj = yaml.load(document)
 # выведем полученный объект, ожидаем строку
 # ExampleClass, value - 5
 
@@ -176,5 +178,3 @@ obj = yaml.load(document)
 # _obj = HardLevel.Objects()
 # _obj.config = {'enemy': ['rat', 'snake', 'dragon'], 'enemy_count': 10}
 # Levels['levels'].append({'map': _map, 'obj': _obj})
-
-print(obj)
