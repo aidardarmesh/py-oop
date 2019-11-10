@@ -125,5 +125,24 @@ class Effect(Hero):
         pass
 
 
-# FIXME
-# add classes
+class Berserk(Effect):
+    def apply_effect(self):
+        self.hp = self.base.hp + 50
+        self.stats["strength"] += 7
+        self.stats["endurance"] += 7
+        self.stats["intelligence"] -= 3
+        self.stats["luck"] += 7
+
+
+class Blessing(Effect):
+    def apply_effect(self):
+        self.stats["strength"] += 2
+        self.stats["endurance"] += 2
+        self.stats["intelligence"] += 2
+        self.stats["luck"] += 2
+
+
+class Weakness(Effect):
+    def apply_effect(self):
+        self.stats["strength"] -= 4
+        self.stats["endurance"] -= 4
