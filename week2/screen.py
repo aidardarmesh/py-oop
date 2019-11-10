@@ -55,6 +55,29 @@ def draw_points(points, style="points", width=3, color=(255, 255, 255)):
                                (int(p[0]), int(p[1])), width)
 
 
+def draw_help():
+    """функция отрисовки экрана справки программы"""
+    gameDisplay.fill((50, 50, 50))
+    font1 = pygame.font.SysFont("courier", 24)
+    font2 = pygame.font.SysFont("serif", 24)
+    data = []
+    data.append(["F1", "Show Help"])
+    data.append(["R", "Restart"])
+    data.append(["P", "Pause/Play"])
+    data.append(["Num+", "More points"])
+    data.append(["Num-", "Less points"])
+    data.append(["", ""])
+    data.append([str(steps), "Current points"])
+
+    pygame.draw.lines(gameDisplay, (255, 50, 50, 255), True, [
+        (0, 0), (800, 0), (800, 600), (0, 600)], 5)
+    for i, text in enumerate(data):
+        gameDisplay.blit(font1.render(
+            text[0], True, (128, 128, 255)), (100, 100 + 30 * i))
+        gameDisplay.blit(font2.render(
+            text[1], True, (128, 128, 255)), (200, 100 + 30 * i))
+
+
 # =======================================================================================
 # Функции, отвечающие за расчет сглаживания ломаной
 # =======================================================================================
@@ -83,6 +106,7 @@ def get_knot(points, count):
         ptn.append(mul(add(points[i], points[i + 1]), 0.5))
         ptn.append(points[i + 1])
         ptn.append(mul(add(points[i + 1], points[i + 2]), 0.5))
+
         res.extend(get_points(ptn, count))
     return res
 
@@ -92,7 +116,7 @@ def set_points(points, speeds):
     for p in range(len(points)):
         points[p] = add(points[p], speeds[p])
         if points[p][0] > SCREEN_DIM[0] or points[p][0] < 0:
-            speeds[p] = (-speeds[p][0], speeds[p][1])
+            speeds[p] = (- speeds[p][0], speeds[p][1])
         if points[p][1] > SCREEN_DIM[1] or points[p][1] < 0:
             speeds[p] = (speeds[p][0], -speeds[p][1])
 
@@ -109,6 +133,7 @@ if __name__ == "__main__":
     working = True
     points = []
     speeds = []
+    show_help = False
     pause = True
 
     hue = 0
@@ -128,6 +153,8 @@ if __name__ == "__main__":
                     pause = not pause
                 if event.key == pygame.K_KP_PLUS:
                     steps += 1
+                if event.key == pygame.K_F1:
+                    show_help = not show_help
                 if event.key == pygame.K_KP_MINUS:
                     steps -= 1 if steps > 1 else 0
 
@@ -142,6 +169,8 @@ if __name__ == "__main__":
         draw_points(get_knot(points, steps), "line", 3, color)
         if not pause:
             set_points(points, speeds)
+        if show_help:
+            draw_help()
 
         pygame.display.flip()
 
