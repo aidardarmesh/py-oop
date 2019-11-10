@@ -18,7 +18,7 @@ class AbstractPositive(AbstractEffect):
     @abstractmethod
     def get_positive_effects(self):
         pass
-
+y
 class AbstractNegative(AbstractEffect):
     @abstractmethod
     def get_negative_effects(self):
