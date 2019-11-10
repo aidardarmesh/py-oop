@@ -29,7 +29,9 @@ class ScreenHandle(pygame.Surface):
             canvas.blit(self.successor, self.next_coord)
             self.successor.draw(canvas)
 
-    # FIXME connect_engine
+    def connect_engine(self, engine):
+        if not self.successor:
+            return self.successor.connect_engine(engine)
 
 
 class GameSurface(ScreenHandle):
